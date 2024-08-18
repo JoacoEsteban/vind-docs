@@ -2,12 +2,12 @@ So you've installed Vind, you're having a blast and are wondering how it works? 
 
 The Vind engine has 2 parts:
 
-1. Element attribute recollection strategy
-2. Element resolution algorithm
+1. [Element attribute recollection strategy](#element-attribute-recollection-strategy)
+2. [Element resolution algorithm](#element-resolution-algorithm)
 
 Let's dive deeper for each of them.
 
-## Element attribute recollection strategy
+## Element attribute recollection strategy {#element-attribute-recollection-strategy}
 
 ![Image of registration process using Vind](https://i.imgur.com/i3qy1si.png)
 
@@ -105,30 +105,30 @@ It would end up like this:
 }
 ```
 
-This tight package of attributes and tag names is enough for Vind to locate the element in successive sessions (we'll talk about this hassle in the future).
+This tight package of attributes and tag names is enough for Vind to locate the element in successive sessions (I'll expand on this in the future. It comes with complications).
 
-Once this information is compiled Vind saves the binding and it's available to use as the element you clicked has been cached before. The clever trick happens once you reload the page and try to use your just-baked binding...
+Once this information is compiled Vind saves the binding. It is now available to use as we have a direct reference to the bound element by the click event. The clever trick happens once you reload the page and try to use your freshly-baked binding...
 
-## Element resolution algorithm
+## Element resolution algorithm {#element-resolution-algorithm}
 
 ![screenshot of of highlighted element using Vind](https://i.imgur.com/CKDTA4S.png)
 
-So when you reload the page and try to use the binding there's some clever tricks going on and all that information we recollected before comes into play.
+So when you reload the page and try to use your binding there will be some clever tricks going on where all that information we recollected before will come into play.
 
 Vind is lazy when it comes to element resolution. I might change this in the future but for now Vind just tries to locate a binding's element once you execute it or when you hover over the button in order to highlight it.
 
 So what happens in that case? How does Vind manage to find the bound element in a new DOM? That's the element resolution algorithm's job.
 
-In short what it does is grab the tag name, grab all attributes, generate an XPath expression
-and query the current document. Let's see a selector based off the computed object from before:
+In short what it does is grab the **tag name**, grab **all attributes**, generate an **[XPath](https://www.w3schools.com/xml/xpath_intro.asp) expression**
+and **query the document**. Let's see a selector based off the computed object from before:
 
 ```xml
 //a[starts-with(href, 'https://vind-works.io')][@name='link to Vind's homepage'][text()='Try Vind']
 ```
 
-If the result is exactly one element then that element is treated as the result and gets returned. If not, then these nuances kick in until we get a one-element result:
+If the result of this query is **exactly one element** then we can say we found it. If not, then these nuances kick in until we get a one-element result:
 
-1. The algorithm will try all combinations of attributes amounting to 2^x, being x the amount of attributes (see Pascal's triangle for a visual representation):
+1. The algorithm will try all combinations of attributes amounting to $2^x$, being x the amount of attributes (see [Pascal's triangle](https://en.wikipedia.org/wiki/Pascal's_triangle) for a visual representation):
 
 ```xml
 //a[starts-with(href, 'https://vind-works.io')][@name='link to Vind's homepage'][text()='Try Vind']
@@ -141,9 +141,20 @@ If the result is exactly one element then that element is treated as the result 
 //a
 ```
 
-As you see, if he have 3 attributes for an element the amount of possible selectors is equal to 2^3 = 8
+In english this would be:
 
-2. It will recursively prepend it's parents and append it's child to the selector in order to augment specificity elevating it to 2^x^y^z being y parents and z children.
+- An `a` element with an `href` equal to `https://vind-works.io`, a `name` equal to `link to Vind's homepage` and a `text` equal to `Try Vind`
+- An `a` element with an `href` equal to `https://vind-works.io` and a `name` equal to `link to Vind's homepage`
+- An `a` element with an `href` equal to `https://vind-works.io` and a `text` equal to `Try Vind`
+- An `a` element with a `text` equal to `Try Vind` and a `name` equal to `link to Vind's homepage`
+- An `a` element with an `href` equal to `https://vind-works.io`
+- An `a` element with a `name` equal to `link to Vind's homepage`
+- An `a` element with a `text` equal to `Try Vind`
+- An `a` element
+
+As you see, if he have 3 attributes for an element the amount of possible selectors is equal to $2^3 = 8$
+
+2. It will recursively prepend it's parents and append it's child to the selector in order to augment specificity elevating it to $2^{x^{y^z}}$ being $y$ parents and $z$ children.
 
 ```xml
 //a[starts-with(href, 'https://vind-works.io')][@name='link to Vind's homepage'][text()='Try Vind']
@@ -157,32 +168,58 @@ As you see, if he have 3 attributes for an element the amount of possible select
 ...Keep going for all possible combinations...
 ```
 
-Wow, so basically if the first try fails then we're getting into a recursive 2^x^y^z notation nightmare. Wouldn't that take ages to complete? What if the element isn't even in the DOM?
-The answer is yeah, it would take ages. You'd be 100% certain that the element isn't in the DOM and also 100% certain that the user's machine would cease to exist before you go around trying to go through all the combinations.
+In english this would be:
 
-So I've implemented some tricks in order to mitigate this absurd amount of iterations and end up with some good results:
+- An `a` element with an `href` equal to `https://vind-works.io`, a `name` equal to `link to Vind's homepage` and a `text` equal to `Try Vind`
+- An `a` element with an `href` equal to `https://vind-works.io`, a `name` equal to `link to Vind's homepage` and a `text` equal to `Try Vind` inside a `div` element
+- An `a` element with an `href` equal to `https://vind-works.io`, a `name` equal to `link to Vind's homepage` and a `text` equal to `Try Vind` inside a `div` element inside a `header` element with a class containing `p-5`
 
-### If the result is **more than one** element and the combination is the last of its size (being 4, 3, 2, 1) drop it
+Then the child:
 
-By querying from most specific to least specific we can leverage this point. If I know that for any most specific combination there's more than one match, then I can assure that all sub-sets of attribute combinations will also give more than one match.
+- An `a` element with an `href` equal to `https://vind-works.io`, a `name` equal to `link to Vind's homepage` and a `text` equal to `Try Vind` containing a `svg` child with a `title` equal to `homepage icon`
+- An `a` element with an `href` equal to `https://vind-works.io`, a `name` equal to `link to Vind's homepage` and a `text` equal to `Try Vind` containing a `svg` child with a `title` equal to `homepage icon` all inside a `div` element
+- An `a` element with an `href` equal to `https://vind-works.io`, a `name` equal to `link to Vind's homepage` and a `text` equal to `Try Vind` containing a `svg` child with a `title` equal to `homepage icon` all inside a `div` element and all inside a `header` element with a class containing `p-5`
+
+Wow, so basically if the first try fails then we're getting into a recursive $2^{x^{y^z}}$ notation nightmare. Wouldn't that take ages to complete? What if the element isn't even in the DOM?
+The answer is yeah, it would take ages. Heat death of the universe scale.
+
+So in order to mitigate this absurd amount of iterations we can implement some clever proofs and end up with good results:
+
+### If the result is _zero_ elements continue with the next attribute combination
+
+If the result is **zero elements** then we can **avoid looking for parent/child combinations**. If we know that for any specific combination there's **zero matches**, then we can assure that **all super-sets of higher specificity will also give zero matches**.
+
+In simpler terms:
+If `//div[@class='flex']` has 0 matches, `//header/div[@class='flex']` will also have 0 matches.
+
+### If the result is _more than one_ element and the attibute combination is the last of its size, abort
+
+We are able to leverage this point by querying from most specific to least specific.
+If we know that for any **most** specific combination there's **more than one match**, then we can assure that **all sub-sets of attribute combinations will also give more than one match**.
 
 Or in simpler terms:
 If `//div[@class='flex']` has 2 matches, `//div` will have at least 2 matches, being the ones inside the most specific selector.
 
-This assumption greatly reduces the amount of iterations, as we can know when to break early.
+This causes a premature throw of `NoUniqueXPathExpressionErrorForElement`
 
-### If the result is **zero** elements continue
+```typescript
+class NoUniqueXPathExpressionErrorForElement extends VindError {
+  constructor() {
+    super(
+      'That element cannot be bound because it Vind cannot uniquely identify it.',
+      'NO_UNIQUE_XPATH_EXPRESSION',
+    )
+  }
+}
+```
 
-If the result is zero elements then we can continue with the next combination of less specificity and avoid looking for parent/child combinations. This also leverages the fact that if the most specific combination doesn't have any matches then all sub-sets of attribute combinations will also give zero matches. It's the same reasoning as the previous point but in the opposite direction.
-
-In simpler terms:
-If `//div[@class='flex']` has 0 matches, `//header/div[@class='flex']` will also have 0 matches, but `//div` might match as it's less specific.
+So yeah, this is the sad path.
 
 ### And of course, If the result is **one** element then return it
 
 If the result is one element then we can return it and stop the iteration. This is the happy path and the one we're looking for.
 
-## Conclusion
+## TLDR?
 
 So in the end Vind is a lazy engine that tries to find the element you bound by using clever tricks and assumptions in order to reduce the amount of iterations and time it takes to find the element. It's a balance between being fast and being accurate, and I think I've found a good middle ground.
 
