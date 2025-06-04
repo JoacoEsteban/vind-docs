@@ -1,3 +1,10 @@
+---
+title: How does Vind work?
+description: A technical dive into Vind's inner workings.
+date: 13/08/2024
+hero_img: https://i.imgur.com/IRieyNk.png
+---
+
 So you've installed Vind, you're having a blast and are wondering how it works? Well, that's one of my favorite topics to talk about.
 
 The Vind engine has 2 parts:
