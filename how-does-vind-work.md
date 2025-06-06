@@ -14,7 +14,7 @@ The Vind engine has 2 parts:
 
 Let's dive deeper for each of them.
 
-## Element attribute recollection strategy {#element-attribute-recollection-strategy}
+## Element attribute recollection strategy{:#element-attribute-recollection-strategy}
 
 ![Image of registration process using Vind](https://i.imgur.com/i3qy1si.png)
 
@@ -116,7 +116,7 @@ This tight package of attributes and tag names is enough for Vind to locate the 
 
 Once this information is compiled Vind saves the binding. It is now available to use as we have a direct reference to the bound element by the click event. The clever trick happens once you reload the page and try to use your freshly-baked binding...
 
-## Element resolution algorithm {#element-resolution-algorithm}
+## Element resolution algorithm{:#element-resolution-algorithm}
 
 ![screenshot of of highlighted element using Vind](https://i.imgur.com/CKDTA4S.png)
 
