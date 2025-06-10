@@ -1,0 +1,28 @@
+name: Update parent repository submodule
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  update-parent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: joacoesteban/vind-api
+          token: ${{ secrets.VIND_API_DEPLOY_TOKEN }}
+          submodules: true
+
+      - name: Update submodules
+        run: |
+          git submodule update --init --recursive
+          git submodule update --recursive --remote
+
+      - name: Commit and push changes
+        run: |
+          git config user.email "[email protected]"
+          git config user.name "GitHub Actions - update submodules"
+          git add --all
+          git commit -m "Update submodules" || echo "No changes to commit"
+          git push
