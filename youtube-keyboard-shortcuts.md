@@ -2,7 +2,7 @@
 title: YouTube Keyboard Shortcuts Guide 2025
 description: Learn YouTube hotkeys to change playback speed, navigate videos, and boost productivity. Plus discover how to create custom shortcuts with Vind
 hero_img: assets/youtube-logo.jpg
-date: 2025-01-01
+date: 2025-06-13
 ---
 YouTube processes over 500 hours of content every minute, making efficient navigation crucial for the billions of users worldwide. Mastering keyboard shortcuts transforms your viewing experience from constant mouse clicking to second-nature keyboard control.
 ## Index
