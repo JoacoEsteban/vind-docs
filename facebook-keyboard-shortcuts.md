@@ -34,7 +34,7 @@ These commands let you access universal functions quickly, no matter where you a
 | Show shortcuts   | `⇧ + ?` (Shift + Question) |
 
 When opening the shortcuts list you're going to see this
-![Facebook keyboard shortcuts popup](facebook-shortcuts.png)
+![Facebook keyboard shortcuts popup](assets/facebook-shortcuts.png)
 
 ---
 
