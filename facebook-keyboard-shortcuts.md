@@ -44,8 +44,8 @@ When looking for specific content, search navigation shortcuts allow you to move
 
 | To Do This      | Use Command |
 | --------------- | ----------- |
-| Next result     | `j j`       |
-| Previous result | `k k`       |
+| Next result     | `j`         |
+| Previous result | `k`         |
 
 ---
 
@@ -55,15 +55,15 @@ The news feed is where shortcuts shine the most. These commands give you full co
 
 | To Do This               | Use Command  |
 | ------------------------ | ------------ |
-| Leave a comment          | `c c`        |
+| Leave a comment          | `c`          |
 | See more                 | `↩` (Enter) |
-| Jump to the next post    | `j j`        |
-| Previous post            | `k k`        |
-| Like or unlike a post    | `l l`        |
-| Open attachment of post  | `o o`        |
-| Create a post            | `p p`        |
-| Search Messenger contact | `q q`        |
-| Share post               | `s s`        |
+| Jump to the next post    | `j`          |
+| Previous post            | `k`          |
+| Like or unlike a post    | `l`          |
+| Open attachment of post  | `o`          |
+| Create a post            | `p`          |
+| Search Messenger contact | `q`          |
+| Share post               | `s`          |
 
 ---
 
@@ -73,10 +73,10 @@ Photo viewing can be streamlined with quick navigation keys. Move through albums
 
 | To Do This               | Use Command |
 | ------------------------ | ----------- |
-| Enter or exit fullscreen | `f f`       |
-| Previous photo           | `j j`       |
-| Next photo               | `k k`       |
-| Like photo               | `l l`       |
+| Enter or exit fullscreen | `f`         |
+| Previous photo           | `j`         |
+| Next photo               | `k`         |
+| Like photo               | `l`         |
 
 ---
 
