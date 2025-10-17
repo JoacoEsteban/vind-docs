@@ -161,7 +161,7 @@ In english this would be:
 
 As you see, if he have 3 attributes for an element the amount of possible selectors is equal to $2^3 = 8$
 
-2. It will recursively prepend it's parents and append it's child to the selector in order to augment specificity elevating it to $2^{x^{y^z}}$ being $y$ parents and $z$ children.
+2. It will recursively prepend its parents and append its child to the selector in order to augment specificity elevating it to $2^{x^{y^z}}$ being $y$ parents and $z$ children.
 
 ```xml
 //a[starts-with(href, 'https://vind-works.io')][@name='link to Vind's homepage'][text()='Try Vind']
