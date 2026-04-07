@@ -230,4 +230,4 @@ If the result is one element then we can return it and stop the iteration. This 
 
 So in the end Vind is a lazy engine that tries to find the element you bound by using clever tricks and assumptions in order to reduce the amount of iterations and time it takes to find the element. It's a balance between being fast and being accurate, and I think I've found a good middle ground.
 
-I hope you've enjoyed this deep dive into Vind's internals and I hope you're having a blast using it. If you have any questions or want to know more about Vind feel free to ask me anything. You can open an issue in the [Vind repository](https://vind-works.io/issues) or contact me directly at [dev@joaco.io](mailto:dev@joaco.io).
+I hope you've enjoyed this deep dive into Vind's internals and I hope you're having a blast using it. If you have any questions or want to know more about Vind feel free to ask me anything. You can open an issue in the [Vind repository](https://github.com/joacoesteban/vind/issues) or contact me directly at [dev@joaco.io](mailto:dev@joaco.io).
